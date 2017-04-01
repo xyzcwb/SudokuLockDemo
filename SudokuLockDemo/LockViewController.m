@@ -18,7 +18,6 @@ typedef NS_ENUM(NSInteger, WBSetLockType) {
     /** 校验 */
     WBCheckLoginLock
 };
-#define SudokuDrawCount 3
 #define kScreenWidth [UIScreen mainScreen].bounds.size.width
 #define kScreenHeight [UIScreen mainScreen].bounds.size.height
 @interface LockViewController ()<WBLockViewDelegate>
@@ -43,25 +42,6 @@ typedef NS_ENUM(NSInteger, WBSetLockType) {
     self.mBtnLeft.hidden = YES;
     self.mLockView.clearDidEndDraw = YES;
     
-    //    else if (self.setLockType == CYLoginLock) {
-    //        self.mLockView.clearDidEndDraw = NO;
-    //        self.mLabelTitle.text = NSLocalizedString(@"解锁", nil);
-    //        self.mLabelCenter.text = NSLocalizedString(@"请绘制解锁图案，不少于4个点", nil);
-    //        self.mLabelCenter.textColor = [UIColor whiteColor];
-    //        [self.mBtnLeft setTitle:NSLocalizedString(@"忘记手势密码", nil) forState:UIControlStateNormal];
-    //        [self.mBtnRight setTitle:NSLocalizedString(@"用户名登录", nil) forState:UIControlStateNormal];
-    //        NSDate *date = [self.lockViewModel cy_getDefeatedTime];
-    //        if (date) {
-    //            self.remainingTime = [self.lockViewModel cy_getDefeatedCount]*15+[date timeIntervalSinceDate:[NSDate date]];
-    //            if (self.remainingTime > 0) {
-    //                self.mLockView.userInteractionEnabled = NO;
-    //                self.mLabelCenter.text = [NSString stringWithFormat:@"还剩%ld秒可再解锁",self.remainingTime];
-    //                self.mLabelCenter.textColor = [UIColor cy_redColor];
-    //                [self timer];
-    //            }
-    //        }
-    //    }
-    //    self.mLockView.showDrawPath = kStringIsEmpty([self.lockViewModel cy_getPath])?YES:[self.lockViewModel cy_getShowDrawPath];
 }
 
 #pragma mark - WBLockViewDelegate

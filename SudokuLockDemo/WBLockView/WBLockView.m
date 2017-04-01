@@ -1,6 +1,6 @@
 //
 //  WBLockView.m
-//  Project
+//  SudokuLockDemo
 //
 //  Created by xyzcwb on 17/3/27.
 //  Copyright © 2017年 xyzcwb. All rights reserved.
@@ -40,20 +40,8 @@
     }
     return self;
 }
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    UITouch *touch = [touches anyObject];
-    CGPoint point = [touch locationInView:self];
-    [self gestureBeganAtPoint:point];
-}
-- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    if (self.panGesture.state != UIGestureRecognizerStateEnded) {
-        UITouch *touch = [touches anyObject];
-        CGPoint point = [touch locationInView:self];
-        [self gestureEndAtPoint:point];
-    }
-}
+#pragma mark - Action
 - (void)actionPanPress:(UIPanGestureRecognizer *)pan {
-    NSLog(@"long = %ld",pan.state);
     CGPoint point = [pan locationInView:self];
     switch (pan.state) {
         case UIGestureRecognizerStateChanged:
@@ -67,6 +55,19 @@
             break;
     }
     [self drawWithPath];
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    UITouch *touch = [touches anyObject];
+    CGPoint point = [touch locationInView:self];
+    [self gestureBeganAtPoint:point];
+}
+- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    if (self.panGesture.state != UIGestureRecognizerStateEnded) {
+        UITouch *touch = [touches anyObject];
+        CGPoint point = [touch locationInView:self];
+        [self gestureEndAtPoint:point];
+    }
 }
 /**
  * 开始
@@ -160,31 +161,6 @@
     }
 }
 
-/**
- * 绘制路线
- */
-- (void)drawWithPath {
-    UIBezierPath *path = [UIBezierPath bezierPath];
-    if (self.selectBtnArray.count && self.isShowDrawPath) {
-        for (int i = 0; i < self.selectBtnArray.count; i++) {
-            UIButton *btn = self.selectBtnArray[i];
-            if (i == 0) {
-                [path moveToPoint:btn.center];
-            }
-            else {
-                [path addLineToPoint:btn.center];
-            }
-        }
-        [path addLineToPoint:self.currentPoint];
-    }
-    [self.shapeLayer removeFromSuperlayer];
-    self.shapeLayer.path = [path CGPath];
-    self.shapeLayer.lineWidth = self.lineWidth?self.lineWidth:2;
-    self.shapeLayer.strokeColor = self.lineColor?self.lineColor.CGColor:[UIColor whiteColor].CGColor;
-    self.shapeLayer.fillColor = [UIColor clearColor].CGColor;
-    [self.layer addSublayer:self.shapeLayer];
-}
-
 #pragma mark - Private
 - (void)addButtonView {
     CGFloat width = self.bounds.size.width < self.bounds.size.height?self.bounds.size.width*0.8:self.bounds.size.height*0.8;
@@ -203,16 +179,26 @@
         [self addSubview:btn];
     }
 }
-
-//给定一个点,判断这个点在不在按钮身上
-- (UIButton *)btnContainsPoint:(CGPoint)point {
-    return nil;
-}
-
-//判断这个点是不是在视图上
-- (BOOL)touchIsNotOnView:(CGPoint)point {
-    CGPoint tempPoint = CGPointMake(point.x+self.frame.origin.x, point.y+self.frame.origin.y);
-    return CGRectContainsPoint(self.frame, tempPoint);
+/**
+ * 绘制路线
+ */
+- (void)drawWithPath {
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    if (self.selectBtnArray.count && self.isShowDrawPath) {
+        UIButton *btn = self.selectBtnArray[0];
+        [path moveToPoint:btn.center];
+        for (int i = 1; i < self.selectBtnArray.count; i++) {
+            btn = self.selectBtnArray[i];
+            [path addLineToPoint:btn.center];
+        }
+        [path addLineToPoint:self.currentPoint];
+    }
+    [self.shapeLayer removeFromSuperlayer];
+    self.shapeLayer.path = [path CGPath];
+    self.shapeLayer.lineWidth = self.lineWidth?self.lineWidth:2;
+    self.shapeLayer.strokeColor = self.lineColor?self.lineColor.CGColor:[UIColor whiteColor].CGColor;
+    self.shapeLayer.fillColor = [UIColor clearColor].CGColor;
+    [self.layer addSublayer:self.shapeLayer];
 }
 /**
  * 获取路径
@@ -225,6 +211,7 @@
     }
     return path;
 }
+
 - (void)setButtonImage {
     for (UIButton *btn in self.subviews) {
         [btn setImage:[UIImage imageNamed:[self.delegate lockViewWithButtonImageAtNormal:self]] forState:UIControlStateNormal];

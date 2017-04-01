@@ -1,6 +1,6 @@
 //
 //  WBLockView.h
-//  Project
+//  SudokuLockDemo
 //
 //  Created by xyzcwb on 17/3/27.
 //  Copyright © 2017年 xyzcwb. All rights reserved.
