@@ -153,7 +153,7 @@
     if ([self.delegate respondsToSelector:@selector(lockViewDidEndDraw:withPath:)]) {
         [self.delegate lockViewDidEndDraw:self withPath:[self getCurrentPath]];
     }
-    if (self.isShowDrawPath) {//结束时清除路径
+    if (self.isClearDidEndDraw) {//结束时是否清空绘制结果
         for (UIButton *btn in self.selectBtnArray) {
             btn.selected = NO;
         }
